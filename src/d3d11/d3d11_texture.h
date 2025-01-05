@@ -723,6 +723,10 @@ namespace dxvk {
             VkImage*              pHandle,
             VkImageLayout*        pLayout,
             VkImageCreateInfo*    pInfo);
+
+    HRESULT STDMETHODCALLTYPE GetVulkanDeviceMemory(
+            VkDeviceMemory*       pMemory,
+            VkDeviceSize*         pSize);
     
   private:
     

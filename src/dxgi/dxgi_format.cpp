@@ -499,7 +499,10 @@ namespace dxvk {
       VK_FORMAT_UNDEFINED,
       VK_IMAGE_ASPECT_PLANE_0_BIT | VK_IMAGE_ASPECT_PLANE_1_BIT },
     // DXGI_FORMAT_P010
-    { }, // Unsupported
+    { VK_FORMAT_G16_B16R16_2PLANE_420_UNORM,
+      VK_FORMAT_UNDEFINED,
+      VK_FORMAT_UNDEFINED,
+      VK_IMAGE_ASPECT_PLANE_0_BIT | VK_IMAGE_ASPECT_PLANE_1_BIT },
     // DXGI_FORMAT_P016
     { }, // Unsupported
     // DXGI_FORMAT_420_OPAQUE
@@ -808,7 +811,10 @@ namespace dxvk {
       VK_FORMAT_R8_UINT,
       VK_FORMAT_R8G8_UINT },
     // DXGI_FORMAT_P010
-    { }, // Unsupported
+    { VK_FORMAT_R16_UNORM,
+      VK_FORMAT_R16G16_UNORM,
+      VK_FORMAT_R16_UINT,
+      VK_FORMAT_R16G16_UINT },
     // DXGI_FORMAT_P016
     { }, // Unsupported
     // DXGI_FORMAT_420_OPAQUE

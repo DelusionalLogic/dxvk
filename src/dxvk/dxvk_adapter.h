@@ -56,6 +56,7 @@ namespace dxvk {
     uint32_t graphics;
     uint32_t transfer;
     uint32_t sparse;
+    uint32_t decode;
   };
 
 

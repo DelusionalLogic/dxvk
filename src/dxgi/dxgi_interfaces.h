@@ -306,6 +306,10 @@ IDXGIVkInteropSurface : public IUnknown {
           VkImage*              pHandle,
           VkImageLayout*        pLayout,
           VkImageCreateInfo*    pInfo) = 0;
+
+  virtual HRESULT STDMETHODCALLTYPE GetVulkanDeviceMemory(
+          VkDeviceMemory*       pMemory,
+          VkDeviceSize*         pSize) = 0;
 };
 
 

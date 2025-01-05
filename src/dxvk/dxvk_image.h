@@ -47,7 +47,7 @@ namespace dxvk {
     VkAccessFlags access = 0u;
     
     /// Image tiling mode
-    VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL;
+    VkImageTiling tiling = VK_IMAGE_TILING_LINEAR;
     
     /// Common image layout
     VkImageLayout layout = VK_IMAGE_LAYOUT_UNDEFINED;

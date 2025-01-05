@@ -147,6 +147,10 @@ namespace dxvk {
     if (transferQueue == VK_QUEUE_FAMILY_IGNORED)
       transferQueue = computeQueue;
 
+    uint32_t decodeQueue = findQueueFamily(
+      VK_QUEUE_VIDEO_DECODE_BIT_KHR,
+      VK_QUEUE_VIDEO_DECODE_BIT_KHR);
+
     uint32_t sparseQueue = VK_QUEUE_FAMILY_IGNORED;
 
     if (m_queueFamilies[graphicsQueue].queueFlags & VK_QUEUE_SPARSE_BINDING_BIT) {
@@ -162,6 +166,7 @@ namespace dxvk {
     queues.graphics = graphicsQueue;
     queues.transfer = transferQueue;
     queues.sparse = sparseQueue;
+    queues.decode = decodeQueue;
     return queues;
   }
 
@@ -465,6 +470,7 @@ namespace dxvk {
     DxvkAdapterQueueIndices queueFamilies = findQueueFamilies();
     queueFamiliySet.insert(queueFamilies.graphics);
     queueFamiliySet.insert(queueFamilies.transfer);
+    queueFamiliySet.insert(queueFamilies.decode);
 
     if (queueFamilies.sparse != VK_QUEUE_FAMILY_IGNORED)
       queueFamiliySet.insert(queueFamilies.sparse);
@@ -519,6 +525,7 @@ namespace dxvk {
     queues.graphics = getDeviceQueue(vkd, queueFamilies.graphics, 0);
     queues.transfer = getDeviceQueue(vkd, queueFamilies.transfer, 0);
     queues.sparse = getDeviceQueue(vkd, queueFamilies.sparse, 0);
+    queues.decode = getDeviceQueue(vkd, queueFamilies.decode, 0);
 
     return new DxvkDevice(instance, this, vkd, enabledFeatures, queues, DxvkQueueCallback());
   }
@@ -1347,6 +1354,7 @@ namespace dxvk {
     Logger::info(str::format("Queue families:",
       "\n  Graphics : ", queues.graphics,
       "\n  Transfer : ", queues.transfer,
+      "\n  Decode   : ", queues.decode,
       "\n  Sparse   : ", queues.sparse != VK_QUEUE_FAMILY_IGNORED ? str::format(queues.sparse) : "n/a"));
   }
   

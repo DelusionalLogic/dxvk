@@ -39,7 +39,7 @@ namespace dxvk {
     imageInfo.stages          = VK_PIPELINE_STAGE_TRANSFER_BIT;
     imageInfo.access          = VK_ACCESS_TRANSFER_READ_BIT
                               | VK_ACCESS_TRANSFER_WRITE_BIT;
-    imageInfo.tiling          = VK_IMAGE_TILING_OPTIMAL;
+    imageInfo.tiling          = VK_IMAGE_TILING_LINEAR;
     imageInfo.layout          = VK_IMAGE_LAYOUT_GENERAL;
     imageInfo.initialLayout   = VK_IMAGE_LAYOUT_UNDEFINED;
     imageInfo.shared          = vkImage != VK_NULL_HANDLE;
@@ -1086,6 +1086,19 @@ namespace dxvk {
       pInfo->initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
     }
     
+    return S_OK;
+  }
+
+  HRESULT STDMETHODCALLTYPE D3D11VkInteropSurface::GetVulkanDeviceMemory(
+          VkDeviceMemory*    pMemory,
+          VkDeviceSize*      pSize) {
+    const Rc<DxvkResourceAllocation> image = m_texture->GetImage()->storage();
+    DxvkResourceMemoryInfo info = image->getMemoryInfo();
+    if(info.offset != 0) {
+        Logger::warn("Texture memory has an offset. I don't know how to represent that.");
+    }
+    *pMemory = info.memory;
+    *pSize = info.size;
     return S_OK;
   }
   

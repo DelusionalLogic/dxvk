@@ -58,6 +58,7 @@ namespace dxvk {
     DxvkDeviceQueue graphics;
     DxvkDeviceQueue transfer;
     DxvkDeviceQueue sparse;
+    DxvkDeviceQueue decode;
   };
   
   /**
