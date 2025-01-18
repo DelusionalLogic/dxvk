@@ -706,6 +706,11 @@ namespace dxvk {
         .sType = VK_STRUCTURE_TYPE_IMAGE_DRM_FORMAT_MODIFIER_PROPERTIES_EXT,
     };
     m_image->getDrmFormat(drmFormat);
+
+
+    VkImageSubresource subresource = GetSubresourceFromIndex(VK_IMAGE_ASPECT_PLANE_0_BIT, 0);
+    VkSubresourceLayout layout = m_device->GetDXVKDevice()->queryImageSubresourceLayout(m_image->info(), subresource);
+
     DxvkSharedTextureMetadata metadata;
 
     metadata.Width          = m_desc.Width;
@@ -719,6 +724,7 @@ namespace dxvk {
     metadata.CPUAccessFlags = m_desc.CPUAccessFlags;
     metadata.MiscFlags      = m_desc.MiscFlags;
     metadata.DRMFormat      = drmFormat.drmFormatModifier;
+    metadata.RowPitch       = layout.rowPitch;
     metadata.TextureLayout  = m_desc.TextureLayout;
 
     if (hSharedHandle == INVALID_HANDLE_VALUE || !setSharedMetadata(hSharedHandle, &metadata, sizeof(metadata))) {
