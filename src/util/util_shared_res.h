@@ -24,6 +24,7 @@ namespace dxvk {
       UINT             BindFlags;
       UINT             CPUAccessFlags;
       UINT             MiscFlags;
+      uint64_t         DRMFormat;
       D3D11_TEXTURE_LAYOUT TextureLayout;
     };
 

@@ -601,6 +601,8 @@ namespace dxvk {
     bool isInitialized(
       const VkImageSubresourceRange& subresources) const;
 
+    void getDrmFormat(VkImageDrmFormatModifierPropertiesEXT& info);
+
   private:
 
     Rc<vk::DeviceFn>            m_vkd;

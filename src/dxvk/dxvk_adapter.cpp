@@ -102,8 +102,18 @@ namespace dxvk {
     info.usage  = query.usage;
     info.flags  = query.flags;
 
+    VkPhysicalDeviceImageDrmFormatModifierInfoEXT drmInfo = { 
+        .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_DRM_FORMAT_MODIFIER_INFO_EXT,
+        .drmFormatModifier = 0, // LINEAR
+        .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
+    };
+
     if (externalInfo.handleType)
       externalInfo.pNext = std::exchange(info.pNext, &externalInfo);
+
+    if (query.tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
+      drmInfo.pNext = std::exchange(info.pNext, &drmInfo);
+    }
 
     VkExternalImageFormatProperties externalProperties = { VK_STRUCTURE_TYPE_EXTERNAL_IMAGE_FORMAT_PROPERTIES };
     VkImageFormatProperties2 properties = { VK_STRUCTURE_TYPE_IMAGE_FORMAT_PROPERTIES_2 };

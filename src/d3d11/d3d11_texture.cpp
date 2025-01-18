@@ -39,7 +39,7 @@ namespace dxvk {
     imageInfo.stages          = VK_PIPELINE_STAGE_TRANSFER_BIT;
     imageInfo.access          = VK_ACCESS_TRANSFER_READ_BIT
                               | VK_ACCESS_TRANSFER_WRITE_BIT;
-    imageInfo.tiling          = VK_IMAGE_TILING_LINEAR;
+    imageInfo.tiling          = VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
     imageInfo.layout          = VK_IMAGE_LAYOUT_GENERAL;
     imageInfo.initialLayout   = VK_IMAGE_LAYOUT_UNDEFINED;
     imageInfo.shared          = vkImage != VK_NULL_HANDLE;
@@ -164,8 +164,8 @@ namespace dxvk {
 
     // Some image formats (i.e. the R32G32B32 ones) are
     // only supported with linear tiling on most GPUs
-    if (!CheckImageSupport(&imageInfo, VK_IMAGE_TILING_OPTIMAL))
-      imageInfo.tiling = VK_IMAGE_TILING_LINEAR;
+    /* if (!CheckImageSupport(&imageInfo, VK_IMAGE_TILING_OPTIMAL)) */
+    /*   imageInfo.tiling = VK_IMAGE_TILING_LINEAR; */
     
     // Determine map mode based on our findings
     VkMemoryPropertyFlags memoryProperties = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
@@ -175,7 +175,7 @@ namespace dxvk {
     // to enable linear tiling, and DXVK needs to be aware that
     // the image can be accessed by the host.
     if (m_mapMode == D3D11_COMMON_TEXTURE_MAP_MODE_DIRECT) {
-      imageInfo.tiling        = VK_IMAGE_TILING_LINEAR;
+      imageInfo.tiling        = VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
       imageInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
 
       if (pDesc->Usage != D3D11_USAGE_DYNAMIC) {
@@ -702,6 +702,10 @@ namespace dxvk {
     else
       hSharedHandle = openKmtHandle( m_image->sharedHandle() );
 
+    VkImageDrmFormatModifierPropertiesEXT drmFormat = {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_DRM_FORMAT_MODIFIER_PROPERTIES_EXT,
+    };
+    m_image->getDrmFormat(drmFormat);
     DxvkSharedTextureMetadata metadata;
 
     metadata.Width          = m_desc.Width;
@@ -714,6 +718,7 @@ namespace dxvk {
     metadata.BindFlags      = m_desc.BindFlags;
     metadata.CPUAccessFlags = m_desc.CPUAccessFlags;
     metadata.MiscFlags      = m_desc.MiscFlags;
+    metadata.DRMFormat      = drmFormat.drmFormatModifier;
     metadata.TextureLayout  = m_desc.TextureLayout;
 
     if (hSharedHandle == INVALID_HANDLE_VALUE || !setSharedMetadata(hSharedHandle, &metadata, sizeof(metadata))) {

@@ -130,6 +130,20 @@ namespace dxvk {
 
     VkImageCreateInfo imageInfo = getImageCreateInfo(usageInfo);
 
+    // Set up external memory parameters for shared images
+    uint64_t modifiers = {
+        0, // Linear
+    };
+    VkImageDrmFormatModifierListCreateInfoEXT drmModifier = {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_DRM_FORMAT_MODIFIER_LIST_CREATE_INFO_EXT,
+        .drmFormatModifierCount = 1,
+        .pDrmFormatModifiers = &modifiers,
+    };
+
+    if(m_info.tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
+        drmModifier.pNext = std::exchange(imageInfo.pNext, &drmModifier);
+    }
+
     // Set up view format list so that drivers can better enable
     // compression. Skip for planar formats due to validation errors.
     VkImageFormatListCreateInfo formatList = { VK_STRUCTURE_TYPE_IMAGE_FORMAT_LIST_CREATE_INFO };
@@ -311,6 +325,12 @@ namespace dxvk {
     m_info.viewFormats = m_viewFormats.data();
   }
 
+  void DxvkImage::getDrmFormat(VkImageDrmFormatModifierPropertiesEXT& info) {
+      auto ret = m_vkd->vkGetImageDrmFormatModifierPropertiesEXT(m_vkd->device(), m_imageInfo.image, &info);
+      if(ret != VK_SUCCESS) {
+          Logger::err("Failed to get drm format");
+      }
+  }
 
   bool DxvkImage::canShareImage(DxvkDevice* device, const VkImageCreateInfo& createInfo, const DxvkSharedHandleInfo& sharingInfo) const {
     if (sharingInfo.mode == DxvkSharedHandleMode::None)

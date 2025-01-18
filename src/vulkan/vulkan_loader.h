@@ -453,6 +453,10 @@ namespace dxvk::vk {
     VULKAN_FN(vkWaitForPresentKHR);
     #endif
 
+    #ifdef VK_EXT_image_drm_format_modifier
+    VULKAN_FN(vkGetImageDrmFormatModifierPropertiesEXT);
+    #endif
+
     #ifdef VK_KHR_win32_keyed_mutex
     // Wine additions to actually use this extension.
     VULKAN_FN(wine_vkAcquireKeyedMutex);
