@@ -326,10 +326,10 @@ namespace dxvk {
   }
 
   void DxvkImage::getDrmFormat(VkImageDrmFormatModifierPropertiesEXT& info) {
-      auto ret = m_vkd->vkGetImageDrmFormatModifierPropertiesEXT(m_vkd->device(), m_imageInfo.image, &info);
-      if(ret != VK_SUCCESS) {
-          Logger::err("Failed to get drm format");
-      }
+      /* if(m_vkd == nullptr || m_vkd->vkGetImageDrmFormatModifierPropertiesEXT(m_vkd->device(), handle(), &info) != VK_SUCCESS) { */
+      /*     Logger::err("Failed to get drm format"); */
+      /* } */
+      info.drmFormatModifier = 0;
   }
 
   bool DxvkImage::canShareImage(DxvkDevice* device, const VkImageCreateInfo& createInfo, const DxvkSharedHandleInfo& sharingInfo) const {
