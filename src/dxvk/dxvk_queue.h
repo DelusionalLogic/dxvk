@@ -174,6 +174,10 @@ namespace dxvk {
      * queue used for command buffer submission.
      */
     void unlockDeviceQueue();
+
+    const DxvkTimelineSemaphores& semaphores() const {
+      return m_semaphores;
+    }
     
   private:
 

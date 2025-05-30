@@ -97,6 +97,20 @@ namespace dxvk {
   void STDMETHODCALLTYPE D3D11VkInterop::ReleaseSubmissionQueue() {
     m_device->GetDXVKDevice()->unlockSubmission();
   }
+
+  void STDMETHODCALLTYPE D3D11VkInterop::GetSemaphores(
+        VkSemaphore* pGraphicsSemaphore,
+        VkSemaphore* pTransferSemaphore) {
+    auto device = static_cast<D3D11Device*>(m_device)->GetDXVKDevice();
+
+    if (pGraphicsSemaphore != nullptr) {
+      *pGraphicsSemaphore = device->graphicsSem();
+    }
+
+    if (pTransferSemaphore != nullptr) {
+      *pTransferSemaphore = device->transferSem();
+    }
+  }
   
   
   void STDMETHODCALLTYPE D3D11VkInterop::GetSubmissionQueue1(

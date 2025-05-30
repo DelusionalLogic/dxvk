@@ -120,6 +120,14 @@ namespace dxvk {
       return m_queues;
     }
 
+    VkSemaphore graphicsSem() const {
+      return m_submissionQueue.semaphores().graphics;
+    }
+
+    VkSemaphore transferSem() const {
+      return m_submissionQueue.semaphores().transfer;
+    }
+
     /**
      * \brief Tests whether a dedicated transfer queue is available
      * \returns \c true if an SDMA queue is supported by the device

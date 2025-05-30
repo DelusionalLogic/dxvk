@@ -56,6 +56,10 @@ namespace dxvk {
             const D3D11_TEXTURE2D_DESC1* pDesc,
             VkImage                      vkImage,
             ID3D11Texture2D**            ppTexture2D);
+
+    void STDMETHODCALLTYPE GetSemaphores(
+        VkSemaphore* pGraphicsSemaphore,
+        VkSemaphore* pTransferSemaphore);
     
   private:
     

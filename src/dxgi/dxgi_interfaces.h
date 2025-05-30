@@ -417,6 +417,10 @@ IDXGIVkInteropDevice1 : public IDXGIVkInteropDevice {
     const D3D11_TEXTURE2D_DESC1* pDesc,
           VkImage               vkImage,
           ID3D11Texture2D**     ppTexture2D) = 0;
+
+  virtual void STDMETHODCALLTYPE GetSemaphores(
+        VkSemaphore* pGraphicsSemaphore,
+        VkSemaphore* pTransferSemaphore) = 0;
 };
 
 /**
